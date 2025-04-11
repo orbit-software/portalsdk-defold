@@ -33,14 +33,14 @@
 			overlayPosition: 'topLeft' // "topLeft" | "topRight" | "bottomLeft" | "bottomRight"
 		}
 	</script>
-	<script src="bundle.js"></script>
 	<script id='engine-loader' type='text/javascript' src="dmloader.js"></script>
 	<script id='engine-setup' type='text/javascript'>
 		// From here you can configure game startup parameters via the CUSTOM_PARAMETERS object,
 		// override ProgressView to create your own loader. See dmloader.js for more details.
 	</script>
 	<script id='engine-start' type='text/javascript'>
-		EngineLoader.load("canvas", "{{exe-name}}");
+		window.runGame = ()=> EngineLoader.load("canvas", "{{exe-name}}");
 	</script>
+	<script src="bundle.js"></script>
   </body>
 </html>
