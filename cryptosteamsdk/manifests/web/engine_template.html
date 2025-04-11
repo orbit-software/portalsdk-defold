@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{{project.title}} {{project.version}}</title>
+    <style>
+		{{{DEFOLD_CUSTOM_CSS_INLINE}}}
+	</style>
+  </head>
+  <body>
+
+    <div id="app-container">
+	  <div id="canvas-container">
+	      <canvas id="canvas" width="100%" height="100%" tabindex="-1"></canvas>
+	      <div id="cs-unity-loading-bar">
+	        <div id="cs-unity-progress-bar-empty">
+	          <div id="cs-unity-progress-bar-full"></div>
+	        </div>
+	      </div>
+	  </div>
+    </div>
+
+
+    <div id="orientation-gif-container">
+      <img id="orientation-gif" src="rotate.gif" alt="Rotate your device">
+    </div>
+
+	<!-- -->
+	<script>
+		window.startupConfig = {
+			isFullscreen: true,
+			overlayPosition: 'topLeft' // "topLeft" | "topRight" | "bottomLeft" | "bottomRight"
+		}
+	</script>
+	<script src="bundle.js"></script>
+	<script id='engine-loader' type='text/javascript' src="dmloader.js"></script>
+	<script id='engine-setup' type='text/javascript'>
+		// From here you can configure game startup parameters via the CUSTOM_PARAMETERS object,
+		// override ProgressView to create your own loader. See dmloader.js for more details.
+	</script>
+	<script id='engine-start' type='text/javascript'>
+		EngineLoader.load("canvas", "{{exe-name}}");
+	</script>
+  </body>
+</html>

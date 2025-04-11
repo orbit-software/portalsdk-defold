@@ -1,0 +1,60 @@
+body {
+    padding: 0;
+    margin: 0;
+    max-height: var(--tg-viewport-height, 100vh);
+    overflow: hidden;
+}
+
+#app-container {
+    position: fixed;
+    width: 100%!important;
+    height: 100%!important;
+    background-color: #221d1f;
+}
+
+#canvas {
+    width: 100%;
+    height: 100%;
+    background: #000
+}
+
+#cs-unity-loading-bar {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: none
+}
+
+#cs-unity-progress-bar-empty {
+    margin-left: auto;
+    margin-right: auto;
+    width: 141px;
+    height: 18px;
+    margin-top: 10px;
+    background: url('progress-bar-empty-dark.png') no-repeat center
+}
+
+#cs-unity-progress-bar-full {
+    width: 0%;
+    height: 18px;
+    margin-top: 10px;
+    background: url('progress-bar-full-dark.png') no-repeat center
+}
+
+#orientation-gif-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: #221d1f;
+}
+
+#orientation-gif {
+    max-width: 150px;
+    max-height: 150px;
+}

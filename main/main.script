@@ -1,0 +1,80 @@
+function init(self)
+
+    --
+    -- Startup Events
+    --
+    print("Test: GameReady")
+    cryptosteamsdk.GameReady()
+
+    --
+    -- Advertisement
+    --
+    print("Test: IsAdRunning")
+    local result = cryptosteamsdk.IsAdRunning()
+    print("IsAdRunning: " .. result);
+
+    print("Test: ReloadAd()")
+    cryptosteamsdk.ReloadAd()
+
+    print("Test: RequestAd()")
+    cryptosteamsdk.RequestAd()
+
+    --
+    -- SDK Information
+    --
+    print("Test: GetVersion()")
+    result = cryptosteamsdk.GetVersion()
+    print("GetVersion: " .. result);
+
+    --
+    -- Per-App Information
+    --
+    print("Test: GetConfig()")
+    result = cryptosteamsdk.GetConfig()
+    print("GetConfig: " .. result);
+
+    --
+    -- User
+    --
+    print("Test: GetLocale()")
+    result = cryptosteamsdk.GetLocale()
+    print("GetLocale: " .. result);
+
+    --
+    -- Sharing
+    --
+    print("Test: ShowSharing()")
+    cryptosteamsdk.ShowSharing("test url", "message text")
+
+    print("Test: GetStartParam()")
+    result = cryptosteamsdk.GetStartParam()
+    print("GetLocale: " .. result);
+
+    --
+    -- Cloud Saves
+    --
+    print("Test: GetValueSync() before set")
+    local result = cryptosteamsdk.GetValueSync("test=key")
+    print("GetValueSync: " .. result);
+    
+    print("Test: SetValueSync()")
+    cryptosteamsdk.SetValueSync("test-key", "test-value 42")
+
+    print("Test: GetValueSync()")
+    local result = cryptosteamsdk.GetValueSync("test=key")
+    print("GetValueSync: " .. result);
+
+    print("Test: RemoveValue()")
+    cryptosteamsdk.RemoveValue("test-key")
+
+    print("Test: GetValueSync() after remove")
+    local result = cryptosteamsdk.GetValueSync("test=key")
+    print("GetValueSync: " .. result);
+
+    
+end
+
+
+function update(self, dt)
+    
+end
