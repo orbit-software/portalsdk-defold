@@ -199,7 +199,7 @@ var LIB = {
     window.CryptoSteamEmuSDK.setValueSync(UTF8ToString(key), UTF8ToString(value))
   },
   
-  getValueSync: function(key, cb) {
+  getValueSync: function(key) {
       var str = window.CryptoSteamEmuSDK.getValueSync(UTF8ToString(key))
       
       if(!str) {

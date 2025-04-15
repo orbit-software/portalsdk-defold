@@ -29,5 +29,5 @@ wasm_streaming = 1
 scale_mode = stretch
 
 [library]
-include_dirs = cryptosteamsdk
+include_dirs = portalsdk
 
