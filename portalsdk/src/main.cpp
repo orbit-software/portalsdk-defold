@@ -1,6 +1,6 @@
 // Extension lib defines
-#define EXTENSION_NAME cryptosteamsdk
-#define LIB_NAME "cryptosteamsdk"
+#define EXTENSION_NAME portalsdk
+#define LIB_NAME "portalsdk"
 #define MODULE_NAME LIB_NAME
 
 // Defold SDK
@@ -146,7 +146,7 @@ static int GetStartParam(lua_State* L)
     const char* result = getStartParam();
 
     if (result == 0 || strcmp(result, "") == 0) {
-        lua_pushnil(L);
+        lua_pushstring(L, "");
     } else {
         lua_pushstring(L, result);
     }
@@ -185,7 +185,7 @@ static int GetValueSync(lua_State* L)
     const char* result = getValueSync(key);
 
     if (result == 0 || strcmp(result, "") == 0) {
-        lua_pushnil(L);
+        lua_pushstring(L, "");
     } else {
         lua_pushstring(L, result);
     }

@@ -102,6 +102,7 @@ var LIB = {
  
   getStartParam: function() {  
     var str = window.CryptoSteamEmuSDK.getStartParam();
+    
     var bufferSize = lengthBytesUTF8(str) + 1;
     var buffer = _malloc(bufferSize);
     stringToUTF8(str, buffer, bufferSize);

@@ -20,8 +20,8 @@ scale = 0.02
 shared_state = 1
 
 [html5]
-htmlfile = /cryptosteamsdk/manifests/web_template/engine_template.html
-cssfile = /cryptosteamsdk/manifests/web_template/style.css
+htmlfile = /portalsdk/manifests/web_template/engine_template.html
+cssfile = /portalsdk/manifests/web_template/style.css
 show_fullscreen_button = 0
 show_made_with_defold = 1
 show_console_banner = 1

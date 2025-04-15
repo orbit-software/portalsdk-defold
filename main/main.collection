@@ -13,7 +13,7 @@ embedded_instances {
   "  x: 128.0\\n"
   "  y: 32.0\\n"
   "}\\n"
-  "text: \\\"CryptoSteamSDK for Defold\\\\n"
+  "text: \\\"PortalSDK for Defold\\\\n"
   "\\\"\\n"
   "  \\\"\\\"\\n"
   "font: \\\"/builtins/fonts/default.font\\\"\\n"
