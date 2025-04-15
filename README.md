@@ -1,2 +1,2 @@
-CryptoSteamSDK for Defold
+PortalSDK for Defold
 =====================================
