@@ -18,13 +18,13 @@ var LIB = {
     });
   },
   isAdRunning: function() {
-    return window.CryptoSteamEmuSDK.isAdRunning();
+    return window.PortalEmuSDK.isAdRunning();
   },
   reloadAd: function() {
-    window.CryptoSteamEmuSDK.reloadAd();
+    window.PortalEmuSDK.reloadAd();
   },
   requestAd: function() {
-    return window.CryptoSteamEmuSDK.requestAd();
+    return window.PortalEmuSDK.requestAd();
   },
   
   
@@ -101,8 +101,7 @@ var LIB = {
   },
  
   getStartParam: function() {  
-    var str = window.CryptoSteamEmuSDK.getStartParam();
-    
+    var str = window.PortalEmuSDK.getStartParam();
     var bufferSize = lengthBytesUTF8(str) + 1;
     var buffer = _malloc(bufferSize);
     stringToUTF8(str, buffer, bufferSize);
@@ -196,11 +195,11 @@ var LIB = {
   //----------------------------------------
   
   setValueSync: function(key, value) {
-    window.CryptoSteamEmuSDK.setValueSync(UTF8ToString(key), UTF8ToString(value))
+    window.PortalEmuSDK.setValueSync(UTF8ToString(key), UTF8ToString(value))
   },
   
   getValueSync: function(key) {
-      var str = window.CryptoSteamEmuSDK.getValueSync(UTF8ToString(key))
+      var str = window.PortalEmuSDK.getValueSync(UTF8ToString(key))
       
       if(!str) {
         str = "";
@@ -211,6 +210,10 @@ var LIB = {
       stringToUTF8(str, buffer, bufferSize);
       
       return buffer;
+  },
+  
+  removeValue: function(key) {
+    window.PortalEmuSDK.removeValueSync(UTF8ToString(key));
   },
     
   setValue: function(key, value) {
@@ -236,10 +239,7 @@ var LIB = {
         dynCall_vi(cb, buffer);
     });
   },
- 
-  removeValue: function(key) {
-    window.CryptoSteamEmuSDK.removeValueSync(UTF8ToString(key));
-  },
+
   
   //----------------------------------------
   //-- Achievements
