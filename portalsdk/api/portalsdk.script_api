@@ -2,19 +2,16 @@
   type: table
   desc: Functions and constants for interacting with Portal SDK APIs
 
-
-
-
   members:
 
 #*****************************************************************************************************
 
-  - name: GameReady
+  - name: game_ready
     type: function
 
 #*****************************************************************************************************
 
-  - name: IsAdRunning
+  - name: is_ad_running
     type: function
 
     return:
@@ -23,22 +20,22 @@
 
 #*****************************************************************************************************
 
-  - name: ReloadAd
+  - name: reload_ad
     type: function
 
 #*****************************************************************************************************
 
-  - name: RequestAd
+  - name: request_ad
     type: function
 
 #*****************************************************************************************************
 
-  - name: GetVersion
+  - name: get_version
     type: function
 
 #*****************************************************************************************************
 
-  - name: GetConfig
+  - name: get_config
     type: function
 
     return:
@@ -47,7 +44,7 @@
       
 #*****************************************************************************************************
 
-  - name: GetLocale
+  - name: get_locale
     type: function
 
     return:
@@ -56,25 +53,42 @@
 
 #*****************************************************************************************************
 
-  - name: SetValueSync
+  - name: set_value_sync
     type: function
+    parameters:
+    - name: key
+      type: string
+    - name: value
+      type: string
 
 #*****************************************************************************************************
 
-  - name: GetValueSync
+  - name: get_value_sync
     type: function
+    parameters:
+    - name: key
+      type: string
 
 #*****************************************************************************************************
 
-  - name: RemoveValue
+  - name: remove_value
     type: function
+    parameters:
+    - name: key
+      type: string
 
 #*****************************************************************************************************
 
-  - name: ShowSharing
+  - name: show_sharing
     type: function
+    parameters:
+    - name: url
+      type: string
+    - name: text
+      type: string
 
 #*****************************************************************************************************
 
-  - name: GetStartParam
+  - name: get_start_param
     type: function
+    

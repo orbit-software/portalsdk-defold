@@ -4,8 +4,8 @@
 #define MODULE_NAME LIB_NAME
 
 // Defold SDK
-#define DLIB_LOG_DOMAIN LIB_NAME
 #include <dmsdk/sdk.h>
+#define DLIB_LOG_DOMAIN LIB_NAME
 
 #if defined(DM_PLATFORM_HTML5)
 
@@ -208,27 +208,24 @@ static int RemoveValue(lua_State* L)
     return 1;
 }
 
-
-
 //
 // Functions exposed to Lua
 static const luaL_reg Module_methods[] =
 {
-    {"GameReady", GameReady},
-    {"IsAdRunning", IsAdRunning},
-    {"ReloadAd", ReloadAd},
-    {"RequestAd", RequestAd},
-    {"GetVersion", GetVersion},
-    {"GetConfig", GetConfig},
-    {"GetLocale", GetLocale},
-    {"ShowSharing", ShowSharing},
-    {"GetStartParam", GetStartParam},
-    {"SetValueSync", SetValueSync},
-    {"GetValueSync", GetValueSync},
-    {"RemoveValue", RemoveValue},
+    {"game_ready", GameReady},
+    {"is_ad_running", IsAdRunning},
+    {"reload_ad", ReloadAd},
+    {"request_ad", RequestAd},
+    {"get_version", GetVersion},
+    {"get_config", GetConfig},
+    {"get_locale", GetLocale},
+    {"show_sharing", ShowSharing},
+    {"get_start_param", GetStartParam},
+    {"set_value_sync", SetValueSync},
+    {"get_value_sync", GetValueSync},
+    {"remove_value", RemoveValue},
     {0, 0}
 };
-
 
 //
 // Extension
