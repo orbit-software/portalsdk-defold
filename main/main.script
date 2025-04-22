@@ -4,26 +4,26 @@ function init(self)
     -- Startup Events
     --
     print("Test: GameReady")
-    portalsdk.GameReady()
+    portalsdk.game_ready()
 
     --
     -- Advertisement
     --
     print("Test: IsAdRunning")
-    local result = portalsdk.IsAdRunning()
+    local result = portalsdk.is_ad_running()
     print("IsAdRunning: " .. tostring(result));
 
     print("Test: ReloadAd()")
-    portalsdk.ReloadAd()
+    portalsdk.reload_ad()
 
     print("Test: RequestAd()")
-    portalsdk.RequestAd()
+    portalsdk.request_ad()
 
     --
     -- SDK Information
     --
     print("Test: GetVersion()")
-    result = portalsdk.GetVersion()
+    result = portalsdk.get_version()
     print("GetVersion: " .. result);
 
     --
@@ -31,45 +31,45 @@ function init(self)
     --
     -- not ready yet
     -- print("Test: GetConfig()")
-    -- result = portalsdk.GetConfig()
+    -- result = portalsdk.get_config()
     -- print("GetConfig: " .. result);
 
     --
     -- User
     --
     print("Test: GetLocale()")
-    result = portalsdk.GetLocale()
+    result = portalsdk.get_locale()
     print("GetLocale: " .. result);
 
     --
     -- Sharing
     --
     print("Test: ShowSharing()")
-    portalsdk.ShowSharing("test url", "message text")
+    portalsdk.show_sharing("test url", "message text")
 
     print("Test: GetStartParam()")
-    result = portalsdk.GetStartParam()
+    result = portalsdk.get_start_param()
     print("GetLocale: " .. result);
 
     --
     -- Cloud Saves
     --
     print("Test: GetValueSync() before set")
-    local result = portalsdk.GetValueSync("test=key")
+    local result = portalsdk.get_value_sync("test=key")
     print("GetValueSync: " .. result);
     
     print("Test: SetValueSync()")
-    portalsdk.SetValueSync("test-key", "test-value 42")
+    portalsdk.set_value_sync("test-key", "test-value 42")
 
     print("Test: GetValueSync()")
-    local result = portalsdk.GetValueSync("test=key")
+    local result = portalsdk.get_value_sync("test=key")
     print("GetValueSync: " .. result);
 
     print("Test: RemoveValue()")
-    portalsdk.RemoveValue("test-key")
+    portalsdk.remove_value("test-key")
 
     print("Test: GetValueSync() after remove")
-    local result = portalsdk.GetValueSync("test=key")
+    local result = portalsdk.get_value_sync("test=key")
     print("GetValueSync: " .. result);
 
     
