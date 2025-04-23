@@ -58,9 +58,8 @@ function init(self)
     print("Test: GetConfig()")
 
     portalsdk.get_config(function(self, data)
-        print("GetConfig: " .. data)
-        print("GetConfig: " .. tostring(json.decode(data)))
-        print("GetConfig: " .. table_to_string(json.decode(data)))
+        print("GetConfig: " .. tostring(data))
+        print("GetConfig: " .. table_to_string(data))
     end)
    
 

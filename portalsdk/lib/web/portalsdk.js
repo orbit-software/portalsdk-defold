@@ -62,7 +62,7 @@ var LIB = {
        
        // dynCall_vi(cb, buffer);
 
-        {{{ makeDynCall("vi", "PortalSDK._getConfigCallback")}}}(buffer);
+        {{{ makeDynCall("vi", "PortalSDK._getConfigCallback")}}}(buffer, str.length);
     });
   },
     

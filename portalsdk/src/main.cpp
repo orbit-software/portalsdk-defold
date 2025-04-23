@@ -85,10 +85,10 @@ static int GetVersion(lua_State* L)
 //----------------------------------------
 //-- Per-App Information
 //----------------------------------------;
-typedef void (*GetConfigCallback)(const char* data);
+typedef void (*GetConfigCallback)(const char* data, const int length);
 extern "C" const char* getConfig(GetConfigCallback callback);
 static dmScript::LuaCallbackInfo* getConfigCallback = 0x0;
-static void PortalSDK_GetConfigCallback(const char* data)
+static void PortalSDK_GetConfigCallback(const char* data, const int length)
 {
     if (!dmScript::IsCallbackValid(getConfigCallback))
     {
@@ -105,8 +105,8 @@ static void PortalSDK_GetConfigCallback(const char* data)
     {
         return;
     }
-    
-    lua_pushstring(L, data);
+
+    dmScript::JsonToLua(L, data, length); 
 
     int numOfArgs = 2;
     int ret = dmScript::PCall(L, numOfArgs, 0);
