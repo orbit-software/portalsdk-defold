@@ -17,8 +17,13 @@ var LIB = {
   //----------------------------------------
   
   isAdEnabled: function(cb) {
+
+    PortalSDK._isAdEnabledCallback = cb;
+
     window.CryptoSteamSDK.isAdEnabled().then(response => {
-        dynCall_vi(cb, response);
+        // dynCall_vi(cb, response);
+
+        {{{ makeDynCall("vi", "PortalSDK._isAdEnabledCallback")}}}(response);
     });
   },
   isAdRunning: function() {

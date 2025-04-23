@@ -39,6 +39,12 @@ function init(self)
     local result = portalsdk.is_ad_running()
     print("IsAdRunning: " .. tostring(result));
 
+    print("Test: IsAdEnabled()")
+
+    portalsdk.is_ad_enabled(function(self, data)
+        print("IsAdEnabled: " .. tostring(data))
+    end)
+
     print("Test: ReloadAd()")
     portalsdk.reload_ad()
 

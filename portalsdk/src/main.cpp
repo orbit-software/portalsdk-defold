@@ -28,8 +28,61 @@ static int GameReady(lua_State* L)
 //----------------------------------------
 //-- Advertisement
 //----------------------------------------
-// todo async methods
-// extern "C" bool isAdEnabled(cb);
+
+typedef void (*IsAdEnabledCallback)(const bool enabled);
+extern "C" bool isAdEnabled(IsAdEnabledCallback callback);
+static dmScript::LuaCallbackInfo* isAdEnabledCallback = 0x0;
+static void PortalSDK_IsAdEnabledCallback(const bool enabled)
+{
+    if (!dmScript::IsCallbackValid(isAdEnabledCallback))
+    {
+        dmLogError("PortalSDK callback is invalid. Use callback function as an argument.");
+        return;
+    }
+
+    // Callback invoke...
+    lua_State* L = dmScript::GetCallbackLuaContext(isAdEnabledCallback);
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (!dmScript::SetupCallback(isAdEnabledCallback))
+    {
+        return;
+    }
+
+    lua_pushboolean(L, enabled);
+
+    int numOfArgs = 2;
+    int ret = dmScript::PCall(L, numOfArgs, 0);
+    (void)ret;
+
+    dmScript::TeardownCallback(isAdEnabledCallback);
+
+    if ((isAdEnabledCallback != 0x0))
+    {
+        dmScript::DestroyCallback(isAdEnabledCallback);
+        isAdEnabledCallback = 0x0;
+    }
+
+}
+static int IsAdEnabled(lua_State* L)
+{
+    int type = lua_type(L, 1);
+    if (type != LUA_TFUNCTION)
+    {
+        luaL_error(L, "PortalSDK callback is invalid. The first argument should be a callback function.");
+        return 0;
+    }
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    isAdEnabledCallback = dmScript::CreateCallback(L, 1);
+
+    isAdEnabled((IsAdEnabledCallback)PortalSDK_IsAdEnabledCallback);
+
+    return 0;
+}
+
 extern "C" bool isAdRunning();
 static int IsAdRunning(lua_State* L)
 {
@@ -252,6 +305,7 @@ static const luaL_reg Module_methods[] =
 {
     {"game_ready", GameReady},
     {"is_ad_running", IsAdRunning},
+    {"is_ad_enabled", IsAdEnabled},
     {"reload_ad", ReloadAd},
     {"request_ad", RequestAd},
     {"get_version", GetVersion},
