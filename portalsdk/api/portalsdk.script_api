@@ -37,10 +37,10 @@
 
   - name: get_config
     type: function
-
-    return:
-    - name: result
-      type: string
+    
+    parameters:
+    - name: callback
+      type: function
       
 #*****************************************************************************************************
 

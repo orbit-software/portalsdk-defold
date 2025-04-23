@@ -85,20 +85,58 @@ static int GetVersion(lua_State* L)
 //----------------------------------------
 //-- Per-App Information
 //----------------------------------------;
-extern "C" const char* getConfig();
+typedef void (*GetConfigCallback)(const char* data);
+extern "C" const char* getConfig(GetConfigCallback callback);
+static dmScript::LuaCallbackInfo* getConfigCallback = 0x0;
+static void PortalSDK_GetConfigCallback(const char* data)
+{
+    if (!dmScript::IsCallbackValid(getConfigCallback))
+    {
+        dmLogError("PortalSDK callback is invalid. Use callback function as an argument.");
+        return;
+    }
+    
+    // Callback invoke...
+    lua_State* L = dmScript::GetCallbackLuaContext(getConfigCallback);
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (!dmScript::SetupCallback(getConfigCallback))
+    {
+        return;
+    }
+    
+    lua_pushstring(L, data);
+
+    int numOfArgs = 2;
+    int ret = dmScript::PCall(L, numOfArgs, 0);
+    (void)ret;
+
+    dmScript::TeardownCallback(getConfigCallback);
+
+    if ((getConfigCallback != 0x0))
+    {
+        dmScript::DestroyCallback(getConfigCallback);
+        getConfigCallback = 0x0;
+    }
+    
+}
 static int GetConfig(lua_State* L)
 {
-    DM_LUA_STACK_CHECK(L, 1);
-
-    const char* result = getConfig();
-
-    if (result == 0 || strcmp(result, "") == 0) {
-        lua_pushnil(L);
-    } else {
-        lua_pushstring(L, result);
+    int type = lua_type(L, 1);
+    if (type != LUA_TFUNCTION)
+    {
+        luaL_error(L, "PortalSDK callback is invalid. The first argument should be a callback function.");
+        return 0;
     }
+    
+    DM_LUA_STACK_CHECK(L, 0);
 
-    return 1;
+    getConfigCallback = dmScript::CreateCallback(L, 1);
+
+    getConfig((GetConfigCallback)PortalSDK_GetConfigCallback);
+
+    return 0;
 }
 //----------------------------------------
 //-- User

@@ -1,5 +1,9 @@
 var LIB = {
   
+  $PortalSDK: {
+      _getConfigCallback: null,
+  },
+
   //----------------------------------------
   //-- Startup Events
   //----------------------------------------
@@ -45,13 +49,21 @@ var LIB = {
   //-- Per-App Information
   //----------------------------------------
   
-  getConfig: function() {
-    var str = JSON.stringify(window.CryptoSteamSDK.getConfig().config);
-  
-    var bufferSize = lengthBytesUTF8(str) + 1;
-    var buffer = _malloc(bufferSize);
-    stringToUTF8(str, buffer, bufferSize);
-    return buffer;
+  getConfig: function(cb) {
+    
+    PortalSDK._getConfigCallback = cb;
+    
+    window.CryptoSteamSDK.getConfig().then(response => {
+       var str = JSON.stringify(response)
+       
+       var bufferSize = lengthBytesUTF8(str) + 1;
+       var buffer = _malloc(bufferSize);
+       stringToUTF8(str, buffer, bufferSize);
+       
+       // dynCall_vi(cb, buffer);
+
+        {{{ makeDynCall("vi", "PortalSDK._getConfigCallback")}}}(buffer);
+    });
   },
     
    
@@ -257,4 +269,5 @@ var LIB = {
  
 }
 
+autoAddDeps(LIB, '$PortalSDK');
 addToLibrary(LIB);
