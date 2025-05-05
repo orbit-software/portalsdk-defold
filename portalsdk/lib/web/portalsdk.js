@@ -2,6 +2,10 @@ var LIB = {
   
   $PortalSDK: {
       _getConfigCallback: null,
+      _getProfileCallback: null,
+      _getPurchasedShopItemsCallback: null,
+      _getShopItemsCallback: null,
+      _openPurchaseConfirmModalCallback: null
   },
 
   //----------------------------------------
@@ -77,6 +81,9 @@ var LIB = {
   //----------------------------------------
   
   getProfile: function(cb) {
+
+    PortalSDK._getProfileCallback = cb;
+
     window.CryptoSteamSDK.getProfile().then(response => {
       
       var str = JSON.stringify(response)
@@ -85,7 +92,8 @@ var LIB = {
       var buffer = _malloc(bufferSize);
       stringToUTF8(str, buffer, bufferSize);
       
-      dynCall_vi(cb, buffer);
+      // dynCall_vi(cb, buffer);
+      {{{ makeDynCall("vi", "PortalSDK._getProfileCallback")}}}(buffer, str.length);
     });
   },
     
@@ -130,18 +138,22 @@ var LIB = {
   //----------------------------------------
   
   openPurchaseConfirmModal: function(itemId, useRect, x, y, width, height, cb) {
+    
+    PortalSDK._openPurchaseConfirmModalCallback = cb;
+
     window.CryptoSteamSDK.getShopItems().then(response => {
     
       const item = response.find(item => item.id === itemId)
       
       if(!item) {
-          const str = 'item not found';
+          const str = "{ \"status\": " + "\"item not found\"" + "}";
                    
           const bufferSize = lengthBytesUTF8(str) + 1;
           const buffer = _malloc(bufferSize);
           stringToUTF8(str, buffer, bufferSize);
           
-          dynCall_vi(cb, buffer);
+          // dynCall_vi(cb, buffer);
+          {{{ makeDynCall("vi", "PortalSDK._openPurchaseConfirmModalCallback")}}}(buffer, str.length);
           return;
       }
 
@@ -166,7 +178,8 @@ var LIB = {
            var buffer = _malloc(bufferSize);
            stringToUTF8(str, buffer, bufferSize);
            
-           dynCall_vi(cb, buffer);
+           // dynCall_vi(cb, buffer);
+           {{{ makeDynCall("vi", "PortalSDK._openPurchaseConfirmModalCallback")}}}(buffer, str.length);
         }).catch(response => {
            const str = "{ \"status\": " + "\"error\"" + "}";
                       
@@ -174,13 +187,17 @@ var LIB = {
            var buffer = _malloc(bufferSize);
            stringToUTF8(str, buffer, bufferSize);
            
-           dynCall_vi(cb, buffer);
+           // dynCall_vi(cb, buffer);
+           {{{ makeDynCall("vi", "PortalSDK._openPurchaseConfirmModalCallback")}}}(buffer, str.length);
         });
  
     })  
   },
 
   getShopItems: function(cb) {
+      
+      PortalSDK._getShopItemsCallback = cb;
+      
       window.CryptoSteamSDK.getShopItems().then(response => {
          
           var str = "{ \"items\": " + JSON.stringify(response) + "}";
@@ -189,11 +206,15 @@ var LIB = {
           var buffer = _malloc(bufferSize);
           stringToUTF8(str, buffer, bufferSize);
           
-          dynCall_vi(cb, buffer);
+          // dynCall_vi(cb, buffer);
+          {{{ makeDynCall("vi", "PortalSDK._getShopItemsCallback")}}}(buffer, str.length);
       });
   },
     
   getPurchasedShopItems: function(cb) {
+      
+      PortalSDK._getPurchasedShopItemsCallback = cb;
+
       window.CryptoSteamSDK.getPurchasedShopItems().then(response => {
           
           var str = JSON.stringify(response);
@@ -202,7 +223,8 @@ var LIB = {
           var buffer = _malloc(bufferSize);
           stringToUTF8(str, buffer, bufferSize);
           
-          dynCall_vi(cb, buffer);
+          //dynCall_vi(cb, buffer);
+          {{{ makeDynCall("vi", "PortalSDK._getPurchasedShopItemsCallback")}}}(buffer, str.length);
       });
   },
     

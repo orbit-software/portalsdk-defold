@@ -194,8 +194,59 @@ static int GetConfig(lua_State* L)
 //----------------------------------------
 //-- User
 //----------------------------------------
-// todo async methods
-// extern "C" const char* getProfile(cb);
+typedef void (*GetProfileCallback)(const char* data, const int length);
+extern "C" const char* getProfile(GetProfileCallback callback);
+static dmScript::LuaCallbackInfo* getProfileCallback = 0x0;
+static void PortalSDK_GetProfileCallback(const char* data, const int length)
+{
+    if (!dmScript::IsCallbackValid(getProfileCallback))
+    {
+        dmLogError("PortalSDK callback is invalid. Use callback function as an argument.");
+        return;
+    }
+
+    // Callback invoke...
+    lua_State* L = dmScript::GetCallbackLuaContext(getProfileCallback);
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (!dmScript::SetupCallback(getProfileCallback))
+    {
+        return;
+    }
+
+    dmScript::JsonToLua(L, data, length); 
+
+    int numOfArgs = 2;
+    int ret = dmScript::PCall(L, numOfArgs, 0);
+    (void)ret;
+
+    dmScript::TeardownCallback(getProfileCallback);
+
+    if ((getProfileCallback != 0x0))
+    {
+        dmScript::DestroyCallback(getProfileCallback);
+        getProfileCallback = 0x0;
+    }
+
+}
+static int GetProfile(lua_State* L)
+{
+    int type = lua_type(L, 1);
+    if (type != LUA_TFUNCTION)
+    {
+        luaL_error(L, "PortalSDK callback is invalid. The first argument should be a callback function.");
+        return 0;
+    }
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    getProfileCallback = dmScript::CreateCallback(L, 1);
+
+    getProfile((GetProfileCallback)PortalSDK_GetProfileCallback);
+
+    return 0;
+}
 // extern "C" long getBalance(cb)
 extern "C" const char* getLocale();
 static int GetLocale(lua_State* L)
@@ -247,10 +298,173 @@ static int GetStartParam(lua_State* L)
 //----------------------------------------
 //-- IAP
 //----------------------------------------
-// todo async methods
+typedef void (*OpenPurchaseConfirmModalCallback)(const char* data, const int length);
+extern "C" const char* openPurchaseConfirmModal(const int itemId, const bool useRect, const int x, const int y, 
+                                                const int width, const int height, OpenPurchaseConfirmModalCallback callback);
+static dmScript::LuaCallbackInfo* openPurchaseConfirmModalCallback = 0x0;
+static void PortalSDK_OpenPurchaseConfirmModal(const char* data, const int length)
+{
+    if (!dmScript::IsCallbackValid(openPurchaseConfirmModalCallback))
+    {
+        dmLogError("PortalSDK callback is invalid. Use callback function as an argument.");
+        return;
+    }
+
+    // Callback invoke...
+    lua_State* L = dmScript::GetCallbackLuaContext(openPurchaseConfirmModalCallback);
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (!dmScript::SetupCallback(openPurchaseConfirmModalCallback))
+    {
+        return;
+    }
+
+    dmScript::JsonToLua(L, data, length); 
+
+    int numOfArgs = 2;
+    int ret = dmScript::PCall(L, numOfArgs, 0);
+    (void)ret;
+
+    dmScript::TeardownCallback(openPurchaseConfirmModalCallback);
+
+    if ((openPurchaseConfirmModalCallback != 0x0))
+    {
+        dmScript::DestroyCallback(openPurchaseConfirmModalCallback);
+        openPurchaseConfirmModalCallback = 0x0;
+    }
+
+}
 // extern "C" void openPurchaseConfirmModal(itemId, useRect, x, y, width, height, cb);
-// extern "C" const char* getShopItems(cb);
-// extern "C" const char* getPurchasedShopItems(cb);
+static int OpenPurchaseConfirmModal(lua_State* L)
+{
+    int type = lua_type(L, 2);
+    if (type != LUA_TFUNCTION)
+    {
+        luaL_error(L, "PortalSDK callback is invalid. The first argument should be a callback function.");
+        return 0;
+    }
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    const int itemId = luaL_checkinteger(L, 1);
+
+    openPurchaseConfirmModalCallback = dmScript::CreateCallback(L, 2);
+
+    openPurchaseConfirmModal(itemId, false, 0, 0, 0, 0, (OpenPurchaseConfirmModalCallback)PortalSDK_OpenPurchaseConfirmModal);
+
+    return 0;
+}
+
+
+typedef void (*GetShopItemsCallback)(const char* data, const int length);
+extern "C" const char* getShopItems(GetShopItemsCallback callback);
+static dmScript::LuaCallbackInfo* getShopItemsCallback = 0x0;
+static void PortalSDK_GetShopItemsCallback(const char* data, const int length)
+{
+    if (!dmScript::IsCallbackValid(getShopItemsCallback))
+    {
+        dmLogError("PortalSDK callback is invalid. Use callback function as an argument.");
+        return;
+    }
+
+    // Callback invoke...
+    lua_State* L = dmScript::GetCallbackLuaContext(getShopItemsCallback);
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (!dmScript::SetupCallback(getShopItemsCallback))
+    {
+        return;
+    }
+
+    dmScript::JsonToLua(L, data, length); 
+
+    int numOfArgs = 2;
+    int ret = dmScript::PCall(L, numOfArgs, 0);
+    (void)ret;
+
+    dmScript::TeardownCallback(getShopItemsCallback);
+
+    if ((getShopItemsCallback != 0x0))
+    {
+        dmScript::DestroyCallback(getShopItemsCallback);
+        getShopItemsCallback = 0x0;
+    }
+
+}
+static int GetShopItems(lua_State* L)
+{
+    int type = lua_type(L, 1);
+    if (type != LUA_TFUNCTION)
+    {
+        luaL_error(L, "PortalSDK callback is invalid. The first argument should be a callback function.");
+        return 0;
+    }
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    getShopItemsCallback = dmScript::CreateCallback(L, 1);
+
+    getShopItems((GetShopItemsCallback)PortalSDK_GetShopItemsCallback);
+
+    return 0;
+}
+
+
+typedef void (*GetPurchasedShopItemsCallback)(const char* data, const int length);
+extern "C" const char* getPurchasedShopItems(GetPurchasedShopItemsCallback callback);
+static dmScript::LuaCallbackInfo* getPurchasedShopItemsCallback = 0x0;
+static void PortalSDK_GetPurchasedShopItemsCallback(const char* data, const int length)
+{
+    if (!dmScript::IsCallbackValid(getPurchasedShopItemsCallback))
+    {
+        dmLogError("PortalSDK callback is invalid. Use callback function as an argument.");
+        return;
+    }
+
+    // Callback invoke...
+    lua_State* L = dmScript::GetCallbackLuaContext(getPurchasedShopItemsCallback);
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (!dmScript::SetupCallback(getPurchasedShopItemsCallback))
+    {
+        return;
+    }
+
+    dmScript::JsonToLua(L, data, length); 
+
+    int numOfArgs = 2;
+    int ret = dmScript::PCall(L, numOfArgs, 0);
+    (void)ret;
+
+    dmScript::TeardownCallback(getPurchasedShopItemsCallback);
+
+    if ((getPurchasedShopItemsCallback != 0x0))
+    {
+        dmScript::DestroyCallback(getPurchasedShopItemsCallback);
+        getPurchasedShopItemsCallback = 0x0;
+    }
+
+}
+static int GetPurchasedShopItems(lua_State* L)
+{
+    int type = lua_type(L, 1);
+    if (type != LUA_TFUNCTION)
+    {
+        luaL_error(L, "PortalSDK callback is invalid. The first argument should be a callback function.");
+        return 0;
+    }
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    getPurchasedShopItemsCallback = dmScript::CreateCallback(L, 1);
+
+    getPurchasedShopItems((GetPurchasedShopItemsCallback)PortalSDK_GetPurchasedShopItemsCallback);
+
+    return 0;
+}
 //----------------------------------------
 //-- Cloud Saves
 //----------------------------------------
@@ -283,9 +497,6 @@ static int GetValueSync(lua_State* L)
 
     return 1;
 }
-// todo async methods
-// extern "C" void setValue(const char* key, const char* v);
-// extern "C" const char* getValue(const char* key, cb);
 extern "C" void removeValue(const char* key);
 static int RemoveValue(lua_State* L)
 {
@@ -310,6 +521,10 @@ static const luaL_reg Module_methods[] =
     {"request_ad", RequestAd},
     {"get_version", GetVersion},
     {"get_config", GetConfig},
+    {"get_profile", GetProfile},
+    {"get_shop_items", GetShopItems},
+    {"get_purchased_shop_items", GetPurchasedShopItems},
+    {"open_purchase_confirm_modal", OpenPurchaseConfirmModal},
     {"get_locale", GetLocale},
     {"show_sharing", ShowSharing},
     {"get_start_param", GetStartParam},

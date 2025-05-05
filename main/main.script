@@ -40,7 +40,6 @@ function init(self)
     print("IsAdRunning: " .. tostring(result));
 
     print("Test: IsAdEnabled()")
-
     portalsdk.is_ad_enabled(function(self, data)
         print("IsAdEnabled: " .. tostring(data))
     end)
@@ -67,8 +66,8 @@ function init(self)
         print("GetConfig: " .. tostring(data))
         print("GetConfig: " .. table_to_string(data))
     end)
-   
 
+    
     --
     -- User
     --
@@ -76,6 +75,13 @@ function init(self)
     result = portalsdk.get_locale()
     print("GetLocale: " .. result);
 
+    -- todo
+    -- print("Test: GetProfile()")
+    -- portalsdk.get_profile(function(self, data)
+    --  print("GetProfile callback")
+    --  print(table_to_string(data))
+    -- end)
+    
     --
     -- Sharing
     --
@@ -84,32 +90,46 @@ function init(self)
 
     print("Test: GetStartParam()")
     result = portalsdk.get_start_param()
-    print("GetLocale: " .. result);
+    print("GetStartParam: " .. result);
 
     --
     -- Cloud Saves
     --
     print("Test: GetValueSync() before set")
-    local result = portalsdk.get_value_sync("test=key")
+    local result = portalsdk.get_value_sync("key")
     print("GetValueSync: " .. result);
     
     print("Test: SetValueSync()")
-    portalsdk.set_value_sync("test-key", "test-value 42")
+    portalsdk.set_value_sync("key", "test-value 42")
 
     print("Test: GetValueSync()")
-    local result = portalsdk.get_value_sync("test=key")
+    local result = portalsdk.get_value_sync("key")
     print("GetValueSync: " .. result);
 
     print("Test: RemoveValue()")
-    portalsdk.remove_value("test-key")
+    portalsdk.remove_value("key")
 
     print("Test: GetValueSync() after remove")
-    local result = portalsdk.get_value_sync("test=key")
+    local result = portalsdk.get_value_sync("key")
     print("GetValueSync: " .. result);
 
-    
+    --
+    -- IAP
+    --
+    print("Test: GetPurchasedShopItems()")
+    portalsdk.get_purchased_shop_items(function(self, data)
+        print("GetPurchasedShopItems: " .. table_to_string(data))
+    end)
+    print("Test: GetShopItems()")
+    portalsdk.get_shop_items(function(self, data)
+        print("GetShopItems: " .. table_to_string(data))
+    end)
+    print("Test: OpenPurchaseConfirmModal() itemId: 66")
+    portalsdk.open_purchase_confirm_modal(66, function(self, data)
+        print("OpenPurchaseConfirmModal 66: " .. table_to_string(data))
+    end)
+       
 end
-
 
 function update(self, dt)
     
