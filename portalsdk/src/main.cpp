@@ -106,17 +106,116 @@ static int ReloadAd(lua_State* L)
     return 1;
 }
 
-extern "C" void requestAd();
+typedef void (*RequestAdCallback)(const bool success);
+extern "C" bool requestAd(RequestAdCallback callback);
+static dmScript::LuaCallbackInfo* requestAdCallback = 0x0;
+static void PortalSDK_RequestAdCallback(const bool success)
+{
+    if (!dmScript::IsCallbackValid(requestAdCallback))
+    {
+        dmLogError("PortalSDK callback is invalid. Use callback function as an argument.");
+        return;
+    }
+
+    // Callback invoke...
+    lua_State* L = dmScript::GetCallbackLuaContext(requestAdCallback);
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (!dmScript::SetupCallback(requestAdCallback))
+    {
+        return;
+    }
+
+    lua_pushboolean(L, success);
+
+    int numOfArgs = 2;
+    int ret = dmScript::PCall(L, numOfArgs, 0);
+    (void)ret;
+
+    dmScript::TeardownCallback(requestAdCallback);
+
+    if ((requestAdCallback != 0x0))
+    {
+        dmScript::DestroyCallback(requestAdCallback);
+        requestAdCallback = 0x0;
+    }
+
+}
+
 static int RequestAd(lua_State* L)
 {
-    DM_LUA_STACK_CHECK(L, 1);
+    int type = lua_type(L, 1);
+    if (type != LUA_TFUNCTION)
+    {
+        luaL_error(L, "PortalSDK callback is invalid. The first argument should be a callback function.");
+        return 0;
+    }
+    
+    DM_LUA_STACK_CHECK(L, 0);
 
-    requestAd();
+    requestAdCallback = dmScript::CreateCallback(L, 1);
 
-    lua_pushnil(L);
+    requestAd((RequestAdCallback)PortalSDK_RequestAdCallback);
 
-    return 1;
+    return 0;
 }
+
+typedef void (*RequestRewardAdCallback)(const bool success);
+extern "C" bool requestRewardAd(RequestRewardAdCallback callback);
+static dmScript::LuaCallbackInfo* requestRewardAdCallback = 0x0;
+static void PortalSDK_RequestRewardAdCallback(const bool success)
+{
+    if (!dmScript::IsCallbackValid(requestRewardAdCallback))
+    {
+        dmLogError("PortalSDK callback is invalid. Use callback function as an argument.");
+        return;
+    }
+
+    // Callback invoke...
+    lua_State* L = dmScript::GetCallbackLuaContext(requestRewardAdCallback);
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (!dmScript::SetupCallback(requestRewardAdCallback))
+    {
+        return;
+    }
+
+    lua_pushboolean(L, success);
+
+    int numOfArgs = 2;
+    int ret = dmScript::PCall(L, numOfArgs, 0);
+    (void)ret;
+
+    dmScript::TeardownCallback(requestRewardAdCallback);
+
+    if ((requestRewardAdCallback != 0x0))
+    {
+        dmScript::DestroyCallback(requestRewardAdCallback);
+        requestRewardAdCallback = 0x0;
+    }
+
+}
+
+static int RequestRewardAd(lua_State* L)
+{
+    int type = lua_type(L, 1);
+    if (type != LUA_TFUNCTION)
+    {
+        luaL_error(L, "PortalSDK callback is invalid. The first argument should be a callback function.");
+        return 0;
+    }
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    requestRewardAdCallback = dmScript::CreateCallback(L, 1);
+
+    requestRewardAd((RequestRewardAdCallback)PortalSDK_RequestRewardAdCallback);
+
+    return 0;
+}
+
 //----------------------------------------
 //-- SDK Information
 //----------------------------------------
@@ -519,6 +618,7 @@ static const luaL_reg Module_methods[] =
     {"is_ad_enabled", IsAdEnabled},
     {"reload_ad", ReloadAd},
     {"request_ad", RequestAd},
+    {"request_reward_ad", RequestRewardAd},
     {"get_version", GetVersion},
     {"get_config", GetConfig},
     {"get_profile", GetProfile},

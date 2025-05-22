@@ -5,7 +5,9 @@ var LIB = {
       _getProfileCallback: null,
       _getPurchasedShopItemsCallback: null,
       _getShopItemsCallback: null,
-      _openPurchaseConfirmModalCallback: null
+      _openPurchaseConfirmModalCallback: null,
+      _requestAdCallback: null,
+      _requestRewardAdCallback: null
   },
 
   //----------------------------------------
@@ -36,10 +38,24 @@ var LIB = {
   reloadAd: function() {
     window.PortalEmuSDK.reloadAd();
   },
-  requestAd: function() {
-    return window.PortalEmuSDK.requestAd();
+  requestAd: function(cb) {
+    
+    PortalSDK._requestAdCallback = cb;
+
+    window.CryptoSteamSDK.requestAd().then(response => {
+        // dynCall_vi(cb, buffer);
+        {{{ makeDynCall("vi", "PortalSDK._requestAdCallback")}}}(response);
+    });
   },
-  
+  requestRewardAd: function(cb) {
+    
+    PortalSDK._requestRewardAdCallback = cb;
+
+    window.CryptoSteamSDK.requestRewardAd().then(response => {
+        // dynCall_vi(cb, buffer);
+        {{{ makeDynCall("vi", "PortalSDK._requestRewardAdCallback")}}}(response);
+    });
+  },
   
   //----------------------------------------
   //-- SDK Information

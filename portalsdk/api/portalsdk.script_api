@@ -40,6 +40,32 @@
     type: function
     desc: Requests an advertisement to be shown.
 
+    parameters:
+    - name: callback
+      type: function
+      
+      parameters:
+      - name: self
+        type: table
+      - name: success
+        type: boolean
+        desc: always true
+
+#*****************************************************************************************************
+
+  - name: request_reward_ad
+    type: function
+    desc: Requests an reward advertisement to be shown.
+    parameters:
+    - name: callback
+      type: function
+      
+      parameters:
+      - name: self
+        type: table
+      - name: success
+        type: boolean
+
 #*****************************************************************************************************
 
   - name: is_ad_running

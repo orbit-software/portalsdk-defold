@@ -48,7 +48,14 @@ function init(self)
     portalsdk.reload_ad()
 
     print("Test: RequestAd()")
-    portalsdk.request_ad()
+    portalsdk.request_ad(function(self, success)
+        print("RequestAd: " .. tostring(success))
+    end)
+
+    print("Test: RequestRewardAd()")
+    portalsdk.request_reward_ad(function(self, success)
+        print("RequestRewardAd: " .. tostring(success))
+    end)
 
     --
     -- SDK Information
