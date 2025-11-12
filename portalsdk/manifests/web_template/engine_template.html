@@ -22,10 +22,6 @@
     </div>
 
 
-    <div id="orientation-gif-container">
-      <img id="orientation-gif" src="rotate.gif" alt="Rotate your device">
-    </div>
-
 	<!-- -->
 	<script>
 		window.startupConfig = {
@@ -33,6 +29,7 @@
 			overlayPosition: 'topLeft' // "topLeft" | "topRight" | "bottomLeft" | "bottomRight"
 		}
 	</script>
+	<script src="https://storage.googleapis.com/social-networth/scripts/sdk.umd.js"></script>
 	<script id='engine-loader' type='text/javascript' src="dmloader.js"></script>
 	<script id='engine-setup' type='text/javascript'>
 		// From here you can configure game startup parameters via the CUSTOM_PARAMETERS object,
@@ -41,6 +38,11 @@
 	<script id='engine-start' type='text/javascript'>
 		window.runGame = ()=> EngineLoader.load("canvas", "{{exe-name}}");
 	</script>
-	<script src="bundle.js"></script>
+	<script>
+      (async function () {
+        await PortalSDK.initialize()
+        await PortalSDK.initializeOverlay()
+      })();
+	</script>
   </body>
 </html>

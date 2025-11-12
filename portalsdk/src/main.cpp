@@ -83,6 +83,7 @@ static int IsAdEnabled(lua_State* L)
     return 0;
 }
 
+// Obsolete
 extern "C" bool isAdRunning();
 static int IsAdRunning(lua_State* L)
 {
@@ -95,6 +96,7 @@ static int IsAdRunning(lua_State* L)
     return 1;
 }
 
+// Obsolete
 extern "C" void reloadAd();
 static int ReloadAd(lua_State* L)
 {
@@ -614,9 +616,11 @@ static int RemoveValue(lua_State* L)
 static const luaL_reg Module_methods[] =
 {
     {"game_ready", GameReady},
+    // obsolete methods
     {"is_ad_running", IsAdRunning},
-    {"is_ad_enabled", IsAdEnabled},
     {"reload_ad", ReloadAd},
+    //
+    {"is_ad_enabled", IsAdEnabled},
     {"request_ad", RequestAd},
     {"request_reward_ad", RequestRewardAd},
     {"get_version", GetVersion},

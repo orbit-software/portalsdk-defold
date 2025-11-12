@@ -68,32 +68,6 @@
 
 #*****************************************************************************************************
 
-  - name: is_ad_running
-    type: function
-    desc: Checks if an advertisement is currently running.
-
-    return:
-    - name: value
-      type: boolean
-      desc: True if an ad is running; otherwise, false
-
-#*****************************************************************************************************
-
-  - name: reload_ad
-    type: function
-    desc: Reload active advertisement
-
-
-
-
-
-
-
-
-
-
-#*****************************************************************************************************
-
   - name: get_version
     type: function
     desc: Retrieves the version of the SDK.
