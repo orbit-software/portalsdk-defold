@@ -218,6 +218,148 @@ static int RequestRewardAd(lua_State* L)
     return 0;
 }
 
+typedef void (*SetOnAdStartCallback)(const bool success);
+extern "C" void setOnAdStart(SetOnAdStartCallback callback);
+static dmScript::LuaCallbackInfo* setOnAdStartCallback = 0x0;
+static void PortalSDK_SetOnAdStartCallback(const bool success)
+{
+    if (!dmScript::IsCallbackValid(setOnAdStartCallback))
+    {
+        dmLogError("PortalSDK callback is invalid. Use callback function as an argument.");
+        return;
+    }
+
+    // Callback invoke...
+    lua_State* L = dmScript::GetCallbackLuaContext(setOnAdStartCallback);
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (!dmScript::SetupCallback(setOnAdStartCallback))
+    {
+        return;
+    }
+
+    lua_pushboolean(L, success);
+
+    int numOfArgs = 2;
+    int ret = dmScript::PCall(L, numOfArgs, 0);
+    (void)ret;
+
+    dmScript::TeardownCallback(setOnAdStartCallback);
+
+}
+
+static int SetOnAdStart(lua_State* L)
+{
+    int type = lua_type(L, 1);
+    if (type != LUA_TFUNCTION)
+    {
+        luaL_error(L, "PortalSDK callback is invalid. The first argument should be a callback function.");
+        return 0;
+    }
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (setOnAdStartCallback != 0x0)
+    {
+        dmScript::DestroyCallback(setOnAdStartCallback);
+        setOnAdStartCallback = 0x0;
+    }
+
+    setOnAdStartCallback = dmScript::CreateCallback(L, 1);
+
+    setOnAdStart((SetOnAdStartCallback)PortalSDK_SetOnAdStartCallback);
+
+    return 0;
+}
+
+extern "C" void clearOnAdStart();
+static int ClearOnAdStart(lua_State* L)
+{
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (setOnAdStartCallback != 0x0)
+    {
+        dmScript::DestroyCallback(setOnAdStartCallback);
+        setOnAdStartCallback = 0x0;
+    }
+
+    clearOnAdStart();
+
+    return 0;
+}
+
+typedef void (*SetOnAdEndCallback)(const bool success);
+extern "C" void setOnAdEnd(SetOnAdEndCallback callback);
+static dmScript::LuaCallbackInfo* setOnAdEndCallback = 0x0;
+static void PortalSDK_SetOnAdEndCallback(const bool success)
+{
+    if (!dmScript::IsCallbackValid(setOnAdEndCallback))
+    {
+        dmLogError("PortalSDK callback is invalid. Use callback function as an argument.");
+        return;
+    }
+
+    // Callback invoke...
+    lua_State* L = dmScript::GetCallbackLuaContext(setOnAdEndCallback);
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (!dmScript::SetupCallback(setOnAdEndCallback))
+    {
+        return;
+    }
+
+    lua_pushboolean(L, success);
+
+    int numOfArgs = 2;
+    int ret = dmScript::PCall(L, numOfArgs, 0);
+    (void)ret;
+
+    dmScript::TeardownCallback(setOnAdEndCallback);
+
+}
+
+static int SetOnAdEnd(lua_State* L)
+{
+    int type = lua_type(L, 1);
+    if (type != LUA_TFUNCTION)
+    {
+        luaL_error(L, "PortalSDK callback is invalid. The first argument should be a callback function.");
+        return 0;
+    }
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (setOnAdEndCallback != 0x0)
+    {
+        dmScript::DestroyCallback(setOnAdEndCallback);
+        setOnAdEndCallback = 0x0;
+    }
+
+    setOnAdEndCallback = dmScript::CreateCallback(L, 1);
+
+    setOnAdEnd((SetOnAdEndCallback)PortalSDK_SetOnAdEndCallback);
+
+    return 0;
+}
+
+extern "C" void clearOnAdEnd();
+static int ClearOnAdEnd(lua_State* L)
+{
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (setOnAdEndCallback != 0x0)
+    {
+        dmScript::DestroyCallback(setOnAdEndCallback);
+        setOnAdEndCallback = 0x0;
+    }
+
+    clearOnAdEnd();
+
+    return 0;
+}
+
 //----------------------------------------
 //-- SDK Information
 //----------------------------------------
@@ -348,7 +490,119 @@ static int GetProfile(lua_State* L)
 
     return 0;
 }
-// extern "C" long getBalance(cb)
+
+//----------------------------------------
+typedef void (*GetBalanceCallback)(const char* data, const int length);
+extern "C" const char* getBalance(GetBalanceCallback callback);
+static dmScript::LuaCallbackInfo* getBalanceCallback = 0x0;
+static void PortalSDK_GetBalanceCallback(const char* data, const int length)
+{
+    if (!dmScript::IsCallbackValid(getBalanceCallback))
+    {
+        dmLogError("PortalSDK callback is invalid. Use callback function as an argument.");
+        return;
+    }
+
+    // Callback invoke...
+    lua_State* L = dmScript::GetCallbackLuaContext(getBalanceCallback);
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (!dmScript::SetupCallback(getBalanceCallback))
+    {
+        return;
+    }
+
+    dmScript::JsonToLua(L, data, length); 
+
+    int numOfArgs = 2;
+    int ret = dmScript::PCall(L, numOfArgs, 0);
+    (void)ret;
+
+    dmScript::TeardownCallback(getBalanceCallback);
+
+    if ((getBalanceCallback != 0x0))
+    {
+        dmScript::DestroyCallback(getBalanceCallback);
+        getBalanceCallback = 0x0;
+    }
+
+}
+static int GetBalance(lua_State* L)
+{
+    int type = lua_type(L, 1);
+    if (type != LUA_TFUNCTION)
+    {
+        luaL_error(L, "PortalSDK callback is invalid. The first argument should be a callback function.");
+        return 0;
+    }
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    getBalanceCallback = dmScript::CreateCallback(L, 1);
+
+    getBalance((GetBalanceCallback)PortalSDK_GetBalanceCallback);
+
+    return 0;
+}
+
+//----------------------------------------
+typedef void (*GetBalanceCoinsCallback)(const char* data, const int length);
+extern "C" const char* getBalanceCoins(GetBalanceCoinsCallback callback);
+static dmScript::LuaCallbackInfo* getBalanceCoinsCallback = 0x0;
+static void PortalSDK_GetBalanceCoinsCallback(const char* data, const int length)
+{
+    if (!dmScript::IsCallbackValid(getBalanceCoinsCallback))
+    {
+        dmLogError("PortalSDK callback is invalid. Use callback function as an argument.");
+        return;
+    }
+
+    // Callback invoke...
+    lua_State* L = dmScript::GetCallbackLuaContext(getBalanceCoinsCallback);
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (!dmScript::SetupCallback(getBalanceCoinsCallback))
+    {
+        return;
+    }
+
+    dmScript::JsonToLua(L, data, length); 
+
+    int numOfArgs = 2;
+    int ret = dmScript::PCall(L, numOfArgs, 0);
+    (void)ret;
+
+    dmScript::TeardownCallback(getBalanceCoinsCallback);
+
+    if ((getBalanceCoinsCallback != 0x0))
+    {
+        dmScript::DestroyCallback(getBalanceCoinsCallback);
+        getBalanceCoinsCallback = 0x0;
+    }
+
+}
+static int GetBalanceCoins(lua_State* L)
+{
+    int type = lua_type(L, 1);
+    if (type != LUA_TFUNCTION)
+    {
+        luaL_error(L, "PortalSDK callback is invalid. The first argument should be a callback function.");
+        return 0;
+    }
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    getBalanceCoinsCallback = dmScript::CreateCallback(L, 1);
+
+    getBalanceCoins((GetBalanceCoinsCallback)PortalSDK_GetBalanceCoinsCallback);
+
+    return 0;
+}
+
+
+
 extern "C" const char* getLocale();
 static int GetLocale(lua_State* L)
 {
@@ -623,6 +877,11 @@ static const luaL_reg Module_methods[] =
     {"is_ad_enabled", IsAdEnabled},
     {"request_ad", RequestAd},
     {"request_reward_ad", RequestRewardAd},
+    {"set_on_ad_start", SetOnAdStart},
+    {"set_on_ad_end", SetOnAdEnd},
+    {"clear_on_ad_start", ClearOnAdStart},
+    {"clear_on_ad_end", ClearOnAdEnd},
+    //
     {"get_version", GetVersion},
     {"get_config", GetConfig},
     {"get_profile", GetProfile},
@@ -635,6 +894,9 @@ static const luaL_reg Module_methods[] =
     {"set_value_sync", SetValueSync},
     {"get_value_sync", GetValueSync},
     {"remove_value", RemoveValue},
+    //
+    {"get_balance", GetBalance},
+    {"get_balance_coins", GetBalanceCoins},
     {0, 0}
 };
 

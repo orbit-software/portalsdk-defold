@@ -32,6 +32,19 @@ function init(self)
     print("Test: GameReady")
     portalsdk.game_ready()
 
+    print("Test: GetBalance()")
+    portalsdk.get_balance(function(self, value)
+        print("GetBalance callback")
+        print(value)
+    end)
+
+    -- -- todo
+    -- print("Test: GetBalanceCoins()")
+    -- portalsdk.get_balance_coins(function(self, value)
+    --     print("GetBalanceCoins callback")
+    --     print(value)
+    -- end)
+
     --
     -- Advertisement
     --
@@ -40,15 +53,31 @@ function init(self)
         print("IsAdEnabled: " .. tostring(data))
     end)
 
-    print("Test: RequestAd()")
-    portalsdk.request_ad(function(self, success)
-        print("RequestAd: " .. tostring(success))
+    print("Test: SetOnAdStart()")
+    portalsdk.set_on_ad_start(function(self, success)
+        print("OnAdStart: " .. tostring(success))
     end)
 
+    print("Test: SetOnAdEnd()")
+    portalsdk.set_on_ad_end(function(self, success)
+        print("OnAdEnd: " .. tostring(success))
+    end)
+
+--     print("Test: RequestAd()")
+--     portalsdk.request_ad(function(self, success)
+--         print("RequestAd: " .. tostring(success))
+--     end)
+-- 
     print("Test: RequestRewardAd()")
     portalsdk.request_reward_ad(function(self, success)
         print("RequestRewardAd: " .. tostring(success))
     end)
+
+--     print("Test: ClearOnAdStart()")
+--     portalsdk.clear_on_ad_start()
+-- 
+--     print("Test: ClearOnAdEnd()")
+--     portalsdk.clear_on_ad_end()
 
     --
     -- SDK Information
@@ -76,17 +105,17 @@ function init(self)
     print("GetLocale: " .. result);
 
     -- todo
-    -- print("Test: GetProfile()")
-    -- portalsdk.get_profile(function(self, data)
-    --  print("GetProfile callback")
-    --  print(table_to_string(data))
-    -- end)
+    print("Test: GetProfile()")
+    portalsdk.get_profile(function(self, data)
+     print("GetProfile callback")
+     print(table_to_string(data))
+    end)
     
     --
     -- Sharing
     --
     print("Test: ShowSharing()")
-    portalsdk.show_sharing("test url", "message text")
+    -- portalsdk.show_sharing("test url", "message text")
 
     print("Test: GetStartParam()")
     result = portalsdk.get_start_param()

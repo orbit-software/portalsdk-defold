@@ -68,6 +68,50 @@
 
 #*****************************************************************************************************
 
+  - name: set_on_ad_start
+    type: function
+    desc: Sets a callback that is called when an advertisement starts.
+
+    parameters:
+    - name: callback
+      type: function
+
+      parameters:
+      - name: self
+        type: table
+      - name: success
+        type: boolean
+
+#*****************************************************************************************************
+
+  - name: set_on_ad_end
+    type: function
+    desc: Sets a callback that is called when an advertisement ends.
+
+    parameters:
+    - name: callback
+      type: function
+
+      parameters:
+      - name: self
+        type: table
+      - name: success
+        type: boolean
+
+#*****************************************************************************************************
+
+  - name: clear_on_ad_start
+    type: function
+    desc: Clears the callback set by set_on_ad_start.
+
+#*****************************************************************************************************
+
+  - name: clear_on_ad_end
+    type: function
+    desc: Clears the callback set by set_on_ad_end.
+
+#*****************************************************************************************************
+
   - name: get_version
     type: function
     desc: Retrieves the version of the SDK.
@@ -130,12 +174,37 @@
 
 
 
+#*****************************************************************************************************
 
+  - name: get_balance
+    type: function
+    desc: Retrieves balance gems
 
+    parameters:
+    - name: callback
+      type: function
 
+      parameters:
+      - name: self
+        type: table
+      - name: value
+        type: string
 
+#*****************************************************************************************************
 
+  - name: get_balance_coins
+    type: function
+    desc: Retrieves balance coins
 
+    parameters:
+    - name: callback
+      type: function
+
+      parameters:
+      - name: self
+        type: table
+      - name: value
+        type: string
 
 
 #*****************************************************************************************************

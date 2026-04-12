@@ -3,11 +3,15 @@ var LIB = {
   $PortalSDK: {
       _getConfigCallback: null,
       _getProfileCallback: null,
+      _getBalanceCallback: null,
+      _getBalanceCoinsCallback: null,
       _getPurchasedShopItemsCallback: null,
       _getShopItemsCallback: null,
       _openPurchaseConfirmModalCallback: null,
       _requestAdCallback: null,
-      _requestRewardAdCallback: null
+      _requestRewardAdCallback: null,
+      _onAdStartCallback: null,
+      _onAdEndCallback: null
   },
 
   //----------------------------------------
@@ -114,18 +118,39 @@ var LIB = {
     });
   },
     
+    
   getBalance: function(cb) {
+
+    PortalSDK._getBalanceCallback = cb;
+
     window.CryptoSteamSDK.getBalance().then(response => {
-       var str = response.toString()
+       var str = response.balance_gems.toString()
        
        var bufferSize = lengthBytesUTF8(str) + 1;
        var buffer = _malloc(bufferSize);
        stringToUTF8(str, buffer, bufferSize);
        
-       dynCall_vi(cb, buffer);
+       // dynCall_vi(cb, buffer);
+       {{{ makeDynCall("vi", "PortalSDK._getBalanceCallback")}}}(buffer, str.length);
     });
   },
+  
+  
+  getBalanceCoins: function(cb) {
 
+      PortalSDK._getBalanceCoinsCallback = cb;
+
+      window.CryptoSteamSDK.getBalance().then(response => {
+         var str = response.balance_coins.toString()
+         
+         var bufferSize = lengthBytesUTF8(str) + 1;
+         var buffer = _malloc(bufferSize);
+         stringToUTF8(str, buffer, bufferSize);
+         
+         // dynCall_vi(cb, buffer);
+         {{{ makeDynCall("vi", "PortalSDK._getBalanceCoinsCallback")}}}(buffer, str.length);
+      });
+  },
   getLocale: function() {  
     var str = window.CryptoSteamSDK.getLocale();
     var bufferSize = lengthBytesUTF8(str) + 1;
@@ -139,7 +164,7 @@ var LIB = {
   //----------------------------------------
     
   showSharing: function(url, text) {
-      window.CryptoSteamSDK.showSharing(url, text)
+      window.CryptoSteamSDK.showSharing(UTF8ToString(url), UTF8ToString(text))
   },
  
   getStartParam: function() {  
@@ -296,7 +321,42 @@ var LIB = {
     });
   },
 
+ 
+  //----------------------------------------
+  //-- Ad Callbacks
+  //----------------------------------------
 
+  setOnAdStart: function(cb) {
+
+    PortalSDK._onAdStartCallback = cb;
+    console.log('[PortalSDK] setOnAdStart');
+
+    window.CryptoSteamSDK.onAdStart = function() {
+        // dynCall_vi(cb, response);
+        {{{ makeDynCall("vi", "PortalSDK._onAdStartCallback")}}}(true);
+    };
+  },
+  setOnAdEnd: function(cb) {
+
+    PortalSDK._onAdEndCallback = cb;
+    console.log('[PortalSDK] setOnAdEnd');
+
+    window.CryptoSteamSDK.onAdEnd = function(success) {
+        // dynCall_vi(cb, response);
+        {{{ makeDynCall("vi", "PortalSDK._onAdEndCallback")}}}(success);
+    };
+  },
+  clearOnAdStart: function() {
+    PortalSDK._onAdStartCallback = null;
+    console.log('[PortalSDK] clearOnAdStart');
+    window.CryptoSteamSDK.onAdStart = null;
+  },
+  clearOnAdEnd: function() {
+    PortalSDK._onAdEndCallback = null;
+    console.log('[PortalSDK] clearOnAdEnd');
+    window.CryptoSteamSDK.onAdEnd = null;
+  },
+ 
  
 }
 
