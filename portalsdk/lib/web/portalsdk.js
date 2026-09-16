@@ -43,20 +43,32 @@ var LIB = {
   reloadAd: function() {
     console.log('[PortalSDK] reloadAd obsolete');
   },
-  requestAd: function(cb) {
+  requestAd: function(cb, placementId) {
     
     PortalSDK._requestAdCallback = cb;
 
-    window.CryptoSteamSDK.requestAd().then(response => {
+    var options = {};
+    var placement = placementId ? UTF8ToString(placementId) : "";
+    if (placement) {
+        options.placementId = placement;
+    }
+
+    window.CryptoSteamSDK.requestAd(options).then(response => {
         // dynCall_vi(cb, buffer);
         {{{ makeDynCall("vi", "PortalSDK._requestAdCallback")}}}(response);
     });
   },
-  requestRewardAd: function(cb) {
+  requestRewardAd: function(cb, placementId) {
     
     PortalSDK._requestRewardAdCallback = cb;
 
-    window.CryptoSteamSDK.requestRewardAd().then(response => {
+    var options = {};
+    var placement = placementId ? UTF8ToString(placementId) : "";
+    if (placement) {
+        options.placementId = placement;
+    }
+
+    window.CryptoSteamSDK.requestRewardAd(options).then(response => {
         // dynCall_vi(cb, buffer);
         {{{ makeDynCall("vi", "PortalSDK._requestRewardAdCallback")}}}(response);
     });
@@ -92,7 +104,7 @@ var LIB = {
        
        // dynCall_vi(cb, buffer);
 
-        {{{ makeDynCall("vi", "PortalSDK._getConfigCallback")}}}(buffer, str.length);
+        {{{ makeDynCall("vi", "PortalSDK._getConfigCallback")}}}(buffer, bufferSize - 1);
     });
   },
     
@@ -114,7 +126,7 @@ var LIB = {
       stringToUTF8(str, buffer, bufferSize);
       
       // dynCall_vi(cb, buffer);
-      {{{ makeDynCall("vi", "PortalSDK._getProfileCallback")}}}(buffer, str.length);
+      {{{ makeDynCall("vi", "PortalSDK._getProfileCallback")}}}(buffer, bufferSize - 1);
     });
   },
     
@@ -131,7 +143,7 @@ var LIB = {
        stringToUTF8(str, buffer, bufferSize);
        
        // dynCall_vi(cb, buffer);
-       {{{ makeDynCall("vi", "PortalSDK._getBalanceCallback")}}}(buffer, str.length);
+       {{{ makeDynCall("vi", "PortalSDK._getBalanceCallback")}}}(buffer, bufferSize - 1);
     });
   },
   
@@ -148,7 +160,7 @@ var LIB = {
          stringToUTF8(str, buffer, bufferSize);
          
          // dynCall_vi(cb, buffer);
-         {{{ makeDynCall("vi", "PortalSDK._getBalanceCoinsCallback")}}}(buffer, str.length);
+         {{{ makeDynCall("vi", "PortalSDK._getBalanceCoinsCallback")}}}(buffer, bufferSize - 1);
       });
   },
   getLocale: function() {  
@@ -195,7 +207,7 @@ var LIB = {
           stringToUTF8(str, buffer, bufferSize);
           
           // dynCall_vi(cb, buffer);
-          {{{ makeDynCall("vi", "PortalSDK._openPurchaseConfirmModalCallback")}}}(buffer, str.length);
+          {{{ makeDynCall("vi", "PortalSDK._openPurchaseConfirmModalCallback")}}}(buffer, bufferSize - 1);
           return;
       }
 
@@ -221,7 +233,7 @@ var LIB = {
            stringToUTF8(str, buffer, bufferSize);
            
            // dynCall_vi(cb, buffer);
-           {{{ makeDynCall("vi", "PortalSDK._openPurchaseConfirmModalCallback")}}}(buffer, str.length);
+           {{{ makeDynCall("vi", "PortalSDK._openPurchaseConfirmModalCallback")}}}(buffer, bufferSize - 1);
         }).catch(response => {
            const str = "{ \"status\": " + "\"error\"" + "}";
                       
@@ -230,7 +242,7 @@ var LIB = {
            stringToUTF8(str, buffer, bufferSize);
            
            // dynCall_vi(cb, buffer);
-           {{{ makeDynCall("vi", "PortalSDK._openPurchaseConfirmModalCallback")}}}(buffer, str.length);
+           {{{ makeDynCall("vi", "PortalSDK._openPurchaseConfirmModalCallback")}}}(buffer, bufferSize - 1);
         });
  
     })  
@@ -249,7 +261,7 @@ var LIB = {
           stringToUTF8(str, buffer, bufferSize);
           
           // dynCall_vi(cb, buffer);
-          {{{ makeDynCall("vi", "PortalSDK._getShopItemsCallback")}}}(buffer, str.length);
+          {{{ makeDynCall("vi", "PortalSDK._getShopItemsCallback")}}}(buffer, bufferSize - 1);
       });
   },
     
@@ -266,7 +278,7 @@ var LIB = {
           stringToUTF8(str, buffer, bufferSize);
           
           //dynCall_vi(cb, buffer);
-          {{{ makeDynCall("vi", "PortalSDK._getPurchasedShopItemsCallback")}}}(buffer, str.length);
+          {{{ makeDynCall("vi", "PortalSDK._getPurchasedShopItemsCallback")}}}(buffer, bufferSize - 1);
       });
   },
     

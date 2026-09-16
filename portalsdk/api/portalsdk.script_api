@@ -51,6 +51,11 @@
         type: boolean
         desc: always true
 
+    - name: placement_id
+      type: string
+      optional: true
+      desc: Placement identifier passed to the Portal SDK for ad analytics. Defaults to "none".
+
 #*****************************************************************************************************
 
   - name: request_reward_ad
@@ -65,6 +70,11 @@
         type: table
       - name: success
         type: boolean
+
+    - name: placement_id
+      type: string
+      optional: true
+      desc: Placement identifier passed to the Portal SDK for ad analytics. Defaults to "none".
 
 #*****************************************************************************************************
 

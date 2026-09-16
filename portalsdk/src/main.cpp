@@ -109,7 +109,7 @@ static int ReloadAd(lua_State* L)
 }
 
 typedef void (*RequestAdCallback)(const bool success);
-extern "C" bool requestAd(RequestAdCallback callback);
+extern "C" bool requestAd(RequestAdCallback callback, const char* placementId);
 static dmScript::LuaCallbackInfo* requestAdCallback = 0x0;
 static void PortalSDK_RequestAdCallback(const bool success)
 {
@@ -156,15 +156,17 @@ static int RequestAd(lua_State* L)
     
     DM_LUA_STACK_CHECK(L, 0);
 
+    const char* placementId = luaL_optstring(L, 2, 0);
+
     requestAdCallback = dmScript::CreateCallback(L, 1);
 
-    requestAd((RequestAdCallback)PortalSDK_RequestAdCallback);
+    requestAd((RequestAdCallback)PortalSDK_RequestAdCallback, placementId);
 
     return 0;
 }
 
 typedef void (*RequestRewardAdCallback)(const bool success);
-extern "C" bool requestRewardAd(RequestRewardAdCallback callback);
+extern "C" bool requestRewardAd(RequestRewardAdCallback callback, const char* placementId);
 static dmScript::LuaCallbackInfo* requestRewardAdCallback = 0x0;
 static void PortalSDK_RequestRewardAdCallback(const bool success)
 {
@@ -211,9 +213,11 @@ static int RequestRewardAd(lua_State* L)
 
     DM_LUA_STACK_CHECK(L, 0);
 
+    const char* placementId = luaL_optstring(L, 2, 0);
+
     requestRewardAdCallback = dmScript::CreateCallback(L, 1);
 
-    requestRewardAd((RequestRewardAdCallback)PortalSDK_RequestRewardAdCallback);
+    requestRewardAd((RequestRewardAdCallback)PortalSDK_RequestRewardAdCallback, placementId);
 
     return 0;
 }
