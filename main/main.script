@@ -121,6 +121,11 @@ function init(self)
     result = portalsdk.get_start_param()
     print("GetStartParam: " .. result);
 
+    print("Test: GetPromoCode()")
+    portalsdk.get_promo_code(function(self, promo_code)
+        print("GetPromoCode: " .. tostring(promo_code))
+    end)
+
     --
     -- Cloud Saves
     --

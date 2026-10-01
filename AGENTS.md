@@ -29,6 +29,7 @@ sample/test project (`main/`, `game.project`).
   - `open_purchase_confirm_modal(item_id, cb)` — cb(self, `{status=...}`); `"item not found"`/`"error"` on failure.
   - `set_value_sync(key, value)` / `get_value_sync(key)` (returns "" when missing) / `remove_value(key)` — cloud KV.
   - `show_sharing(url, text)` — Telegram share dialog; `get_start_param()` — start param string ("" if none).
+  - `get_promo_code(cb)` — cb(self, promo code string or nil); callable before `initialize()`.
   - Obsolete, still registered: `is_ad_running()` (always false), `reload_ad()` (no-op).
 - Sample usage of every call: `main/main.script`.
 
