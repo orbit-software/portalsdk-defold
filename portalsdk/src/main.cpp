@@ -655,6 +655,72 @@ static int GetStartParam(lua_State* L)
     return 1;
 }
 //----------------------------------------
+//-- Promo Codes
+//----------------------------------------
+typedef void (*GetPromoCodeCallback)(const char* promoCode);
+extern "C" void getPromoCode(GetPromoCodeCallback callback);
+static dmScript::LuaCallbackInfo* getPromoCodeCallback = 0x0;
+static void PortalSDK_GetPromoCodeCallback(const char* promoCode)
+{
+    if (!dmScript::IsCallbackValid(getPromoCodeCallback))
+    {
+        dmLogError("PortalSDK callback is invalid. Use callback function as an argument.");
+        return;
+    }
+
+    // Callback invoke...
+    lua_State* L = dmScript::GetCallbackLuaContext(getPromoCodeCallback);
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (!dmScript::SetupCallback(getPromoCodeCallback))
+    {
+        return;
+    }
+
+    if (promoCode == 0 || strcmp(promoCode, "") == 0) {
+        lua_pushnil(L);
+    } else {
+        lua_pushstring(L, promoCode);
+    }
+
+    int numOfArgs = 2;
+    int ret = dmScript::PCall(L, numOfArgs, 0);
+    (void)ret;
+
+    dmScript::TeardownCallback(getPromoCodeCallback);
+
+    if ((getPromoCodeCallback != 0x0))
+    {
+        dmScript::DestroyCallback(getPromoCodeCallback);
+        getPromoCodeCallback = 0x0;
+    }
+
+}
+static int GetPromoCode(lua_State* L)
+{
+    int type = lua_type(L, 1);
+    if (type != LUA_TFUNCTION)
+    {
+        luaL_error(L, "PortalSDK callback is invalid. The first argument should be a callback function.");
+        return 0;
+    }
+
+    DM_LUA_STACK_CHECK(L, 0);
+
+    if (getPromoCodeCallback != 0x0)
+    {
+        dmScript::DestroyCallback(getPromoCodeCallback);
+        getPromoCodeCallback = 0x0;
+    }
+
+    getPromoCodeCallback = dmScript::CreateCallback(L, 1);
+
+    getPromoCode((GetPromoCodeCallback)PortalSDK_GetPromoCodeCallback);
+
+    return 0;
+}
+//----------------------------------------
 //-- IAP
 //----------------------------------------
 typedef void (*OpenPurchaseConfirmModalCallback)(const char* data, const int length);
@@ -895,6 +961,7 @@ static const luaL_reg Module_methods[] =
     {"get_locale", GetLocale},
     {"show_sharing", ShowSharing},
     {"get_start_param", GetStartParam},
+    {"get_promo_code", GetPromoCode},
     {"set_value_sync", SetValueSync},
     {"get_value_sync", GetValueSync},
     {"remove_value", RemoveValue},

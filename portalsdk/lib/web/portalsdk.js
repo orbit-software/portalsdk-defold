@@ -11,7 +11,8 @@ var LIB = {
       _requestAdCallback: null,
       _requestRewardAdCallback: null,
       _onAdStartCallback: null,
-      _onAdEndCallback: null
+      _onAdEndCallback: null,
+      _getPromoCodeCallback: null
   },
 
   //----------------------------------------
@@ -185,6 +186,33 @@ var LIB = {
     var buffer = _malloc(bufferSize);
     stringToUTF8(str, buffer, bufferSize);
     return buffer
+  },
+  
+  //----------------------------------------
+  //-- Promo Codes
+  //----------------------------------------
+  
+  getPromoCode: function(cb) {
+
+    PortalSDK._getPromoCodeCallback = cb;
+
+    window.CryptoSteamSDK.getPromoCode().then(response => {
+        var str = response || "";
+
+        var bufferSize = lengthBytesUTF8(str) + 1;
+        var buffer = _malloc(bufferSize);
+        stringToUTF8(str, buffer, bufferSize);
+
+        {{{ makeDynCall("vi", "PortalSDK._getPromoCodeCallback")}}}(buffer);
+    }).catch(response => {
+        var str = "";
+
+        var bufferSize = lengthBytesUTF8(str) + 1;
+        var buffer = _malloc(bufferSize);
+        stringToUTF8(str, buffer, bufferSize);
+
+        {{{ makeDynCall("vi", "PortalSDK._getPromoCodeCallback")}}}(buffer);
+    });
   },
   
   //----------------------------------------

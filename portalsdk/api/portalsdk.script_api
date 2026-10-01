@@ -330,4 +330,21 @@
     - name: value
       type: string
       desc: The start parameter.
+
+#*****************************************************************************************************
+
+  - name: get_promo_code
+    type: function
+    desc: Retrieves the promo code the game was launched with (Telegram and Web). Can be called before the SDK is initialized.
+
+    parameters:
+    - name: callback
+      type: function
+
+      parameters:
+      - name: self
+        type: table
+      - name: promo_code
+        type: string
+        desc: The promo code, or nil if the game was launched without a valid promo code.
     
